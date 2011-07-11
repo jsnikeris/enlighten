@@ -5,8 +5,7 @@
             [net.cgrand.enlive-html :as html]
             [ring.adapter.jetty :as jetty]))
 
-(deftemplate main "templates/main.html" []
-  [:p] (html/content "Hello, World!"))
+(deftemplate main "templates/main.html" [])
 
 (defroutes routes
   (GET "/" [] (apply str (main)))
