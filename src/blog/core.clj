@@ -1,5 +1,6 @@
 ;; Considerations:
 ;;   - the edit-url for an entry is also its permalink
+;;   - does not validate posted atom entries
 
 (ns blog.core
   (:use [compojure.core :only (defroutes GET POST)])
@@ -54,6 +55,17 @@
                   (tf/unparse (tf/formatters :year-month-day)))]
     (str date "-" (hyphenize title))))
 
+;; selectors of elements expected to be found on an Entry
+(def *expected-selectors* [[:id] [:published] [:updated]
+                           [[:link (e/attr= :rel "edit")]]
+                           [[:link (e/attr= :rel "alternate")]]])
+
+(defn normalize-entry [entry]
+  (e/transform entry [:entry]
+    (e/append
+     (for [sel (filter #(empty? (e/select entry %)) *expected-selectors*)]
+       (e/select (e/xml-resource "templates/entry.xml") sel)))))
+
 (defn populate-entry [entry]
   (let [pub-date (time/now)
         title (select-text [:title] entry)
@@ -68,9 +80,8 @@
 (defn post-response [entry]
   (apply str (e/emit* entry)))
 
-;; TODO: validate/normalize Entry
 (defn handle-post [body]
-  (let [entry (populate-entry (e/xml-resource body))
+  (let [entry (-> body e/xml-resource normalize-entry populate-entry)
         filename (make-filename entry)]
     (spit (str *entry-dir* filename ".xml")
           (apply str (e/emit* entry)))
