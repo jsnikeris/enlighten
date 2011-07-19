@@ -1,6 +1,6 @@
 # blog
 
-A blog.
+An atom-enabled blog, written in Clojure, starring Compojure and Enlive.
 
 ## Usage
 
