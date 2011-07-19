@@ -2,7 +2,7 @@
 ;;   - the edit-url for an entry is also its permalink
 ;;   - does not validate posted atom entries
 
-(ns blog.core
+(ns enlighten.core
   (:use [compojure.core :only (defroutes GET POST)])
   (:require [clojure.string :as str]
             [clj-time.core :as time]

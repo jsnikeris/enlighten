@@ -1,4 +1,4 @@
-# blog
+# enlighten
 
 An atom-enabled blog, written in Clojure, starring Compojure and Enlive.
 
