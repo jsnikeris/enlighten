@@ -72,10 +72,10 @@
         edit-url (make-edit-url pub-date title)
         id (make-tag-uri pub-date edit-url)]
     (e/at entry
-          [[:link #{(e/attr= :rel "edit")
-                    (e/attr= :rel "alternate")}]] (e/set-attr :href edit-url)
-          [:id] (e/content id)
-          [#{:published :updated}] (e/content (str pub-date)))))
+      [[:link #{(e/attr= :rel "edit") (e/attr= :rel "alternate")}]]
+        (e/set-attr :href (str edit-url))
+      [:id] (e/content id)
+      [#{:published :updated}] (e/content (str pub-date)))))
 
 (defn post-response [entry]
   (apply str (e/emit* entry)))
