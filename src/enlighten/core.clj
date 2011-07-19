@@ -12,7 +12,7 @@
             [ring.adapter.jetty :as jetty]))
 
 ;; TODO: properties file?
-(def *post-url* "http://localhost:8080/")
+(def *post-url* "http://localhost:3000/")
 (def *entry-dir* "/home/joe/Documents/Blog/Entries/")
 
 (e/deftemplate main "templates/main.html" []
@@ -109,4 +109,4 @@
 
 ;; (defonce *server*
 ;;   ;; #' (var) allows rebinding of 'app' to be reflected immediately
-;;   (jetty/run-jetty #'app {:port 8080 :join? false}))
+;;   (jetty/run-jetty #'app {:port 3000 :join? false}))
