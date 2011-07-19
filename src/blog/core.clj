@@ -27,11 +27,12 @@
 
 (defn make-edit-url
   "returns URL of the form: <*post-url*>/2011/apr/this-is-the-title"
-  [date title]
+  [date-time title]
   (let [month-formatter (tf/formatter "MMM")
-        month (->> date (tf/unparse month-formatter) str/lower-case)
+        month (->> date-time (tf/unparse month-formatter) str/lower-case)
         [_ base-url] (re-find #"(.*?)/?$" *post-url*)]
-    (str/join "/" [base-url (time/year date) month (hyphenize title)])))
+    (java.net.URL.
+     (str/join "/" [base-url (time/year date-time) month (hyphenize title)]))))
 
 (defn make-tag-uri
   "returns a tag URI given a DateTime and a URL"
@@ -57,7 +58,7 @@
   (let [pub-date (time/now)
         title (select-text [:title] entry)
         edit-url (make-edit-url pub-date title)
-        id (make-tag-uri pub-date (java.net.URL. edit-url))]
+        id (make-tag-uri pub-date edit-url)]
     (e/at entry
           [[:link #{(e/attr= :rel "edit")
                     (e/attr= :rel "alternate")}]] (e/set-attr :href edit-url)
