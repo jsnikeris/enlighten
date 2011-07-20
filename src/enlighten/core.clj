@@ -24,7 +24,7 @@
 
 (defroutes routes
   (GET "/" [] (apply str (main)))
-  (POST *post-url* {body :body} (handle-post body))
+  (POST (str *post-url*) {body :body} (handle-post body))
   (route/resources "/"))
 
 (defn wrap-charset [handler charset]

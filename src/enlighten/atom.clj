@@ -7,7 +7,7 @@
             [net.cgrand.enlive-html :as e]))
 
 ;; TODO: properties file?
-(def *post-url* "http://localhost:3000/")
+(def *post-url* (java.net.URL. "http://localhost:3000/"))
 
 ;; selectors of elements expected to be found on an entry
 (def *expected-selectors* [[:id] [:published] [:updated]
@@ -30,7 +30,7 @@
   [date-time title]
   (let [month-formatter (tf/formatter "MMM")
         month (->> date-time (tf/unparse month-formatter) str/lower-case)
-        [_ base-url] (re-find #"(.*?)/?$" *post-url*)]
+        [_ base-url] (re-find #"(.*?)/?$" (str *post-url*))]
     (java.net.URL.
      (str/join "/" [base-url (time/year date-time) month (titleize title)]))))
 
