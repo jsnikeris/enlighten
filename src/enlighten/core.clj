@@ -4,26 +4,23 @@
 
 (ns enlighten.core
   (:use [compojure.core :only (defroutes GET POST)]
-        [enlighten.atom])
+        [enlighten.atom]
+        [enlighten.model])
   (:require [compojure.route :as route]
             [net.cgrand.enlive-html :as e]
             [ring.adapter.jetty :as jetty]))
-
-;; TODO: properties file?
-(def *entry-dir* "/home/joe/Documents/Blog/Entries/")
 
 (e/deftemplate main "templates/main.html" []
   [[:link (e/attr= :rel "service.post")]] (e/set-attr :href *post-url*))
 
 (defn post-response [entry]
-  (apply str (e/emit* entry)))
+  (str-entry entry))
 
 (defn handle-post [body]
-  (let [entry (-> body e/xml-resource normalize-entry populate-entry)
-        filename (make-filename entry)]
-    (spit (str *entry-dir* filename ".xml")
-          (apply str (e/emit* entry)))
-    (post-response entry)))
+  (let [entry (-> body e/xml-resource normalize-entry populate-entry)]
+    (if (save-entry entry)
+      (post-response entry)
+      "Error saving entry")))           ;TODO: return error status code
 
 (defroutes routes
   (GET "/" [] (apply str (main)))

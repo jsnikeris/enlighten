@@ -14,6 +14,9 @@
                            [[:link (e/attr= :rel "edit")]]
                            [[:link (e/attr= :rel "alternate")]]])
 
+(defn str-entry [entry]
+  (apply str (e/emit* entry)))
+
 ;; TODO: handle other special characters
 (defn titleize
   "Replaces spaces with dashes and lower-cases"
@@ -43,13 +46,6 @@
   "returns the text of the first matching node"
   [selector node-or-nodes]
   (-> node-or-nodes (e/select selector) first e/text))
-
-(defn make-filename [entry]
-  (let [title (select-text [:title] entry)
-        date (->> (select-text [:published] entry)
-                  tf/parse
-                  (tf/unparse (tf/formatters :year-month-day)))]
-    (str date "-" (titleize title))))
 
 (defn normalize-entry [entry]
   "ensure entry has elements found in *expected-selectors*"
