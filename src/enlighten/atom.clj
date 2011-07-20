@@ -9,6 +9,8 @@
 ;; TODO: properties file?
 (def *post-url* (java.net.URL. "http://localhost:3000/"))
 
+(def *atom-type* "application/atom+xml")
+
 ;; selectors of elements expected to be found on an entry
 (def *expected-selectors* [[:id] [:published] [:updated]
                            [[:link (e/attr= :rel "edit")]]

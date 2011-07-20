@@ -8,13 +8,18 @@
         [enlighten.model])
   (:require [compojure.route :as route]
             [net.cgrand.enlive-html :as e]
+            [ring.util.response :as resp]
             [ring.adapter.jetty :as jetty]))
 
 (e/deftemplate main "templates/main.html" []
   [[:link (e/attr= :rel "service.post")]] (e/set-attr :href *post-url*))
 
 (defn post-response [entry]
-  (str-entry entry))
+  (let [location (select-text [:link (e/attr= :rel "edit")] entry)]
+    (-> entry str-entry resp/response
+        (resp/status 201)
+        (resp/content-type *atom-type*)
+        (resp/header "Location" location))))
 
 (defn handle-post [body]
   (let [entry (-> body e/xml-resource normalize-entry populate-entry)]
