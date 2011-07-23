@@ -15,8 +15,8 @@
   [[:link (e/attr= :rel "service.post")]] (e/set-attr :href *post-url*))
 
 (defn post-response [entry]
-  (let [location (select-text [:link (e/attr= :rel "edit")] entry)]
-    (-> entry str-entry resp/response
+  (let [location (e/select-text entry [:link (e/attr= :rel "edit")])]
+    (-> entry e/as-str resp/response
         (resp/status 201)
         (resp/content-type *atom-type*)
         (resp/header "Location" location))))

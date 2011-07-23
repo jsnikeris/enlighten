@@ -1,15 +1,14 @@
 (ns enlighten.test.core
   (:use [clojure.test]
         [ring.mock.request]
-        [enlighten.core]
-        [enlighten.atom])
+        (enlighten core atom model))
   (:require [net.cgrand.enlive-html :as e]))
 
 (deftest post
   (let [req-entry (e/xml-resource "test/post.xml")
-        title (select-text [:title] req-entry)
+        title (e/select-text [:title] req-entry)
         req (body (request :post (str *post-url*))
-                  (str-entry req-entry))
+                  (e/as-str req-entry))
         {:keys [headers body]} (app req)
         resp-entry (e/html-snippet body)
         [edit-link] (e/select resp-entry [[:link (e/attr= :rel "edit")]])
