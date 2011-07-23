@@ -1,0 +1,10 @@
+-*-Org-*-
+
+* TODO change namespace declarations: com.snikeris.etc
+* TODO finish get-entry
+* TODO prevent creation of two entries w/ same title, same month/year
+* Implement GET on edit-urls
+** TODO create Compojure route
+
+* Before release
+** TODO release enlive fork to clojars
