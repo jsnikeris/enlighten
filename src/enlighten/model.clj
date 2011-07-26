@@ -24,18 +24,15 @@
     (java.net.URL.
      (str/join "/" [base-url (time/year date-time) month (titleize title)]))))
 
-(defn filename [entry]
-  (let [title (e/select-text entry [:title])
-        date (->> (e/select-text entry [:published])
-                  tf/parse
-                  (tf/unparse (tf/formatters :year-month-day)))]
-    (str *entry-dir* date "-" (titleize title) ".xml")))
+(defn filename [url]
+  (let [[title month year] (-> url .getPath (str/split #"/") rseq)]
+    (str *entry-dir* year "-" month "-" title ".xml")))
 
 (defn get-entry [url]
-  (let [[title month year] (-> url .getPath (str/split #"/") rseq)]))
-        
+  (-> url filename java.io.File. e/xml-resource))
 
 (defn save-entry [entry]
-  (do
-    (spit (filename entry) (e/as-str entry))
+  (let [sel [[:link (e/attr= :rel "edit")]]
+        url (-> entry (e/select-attrib sel :href) java.net.URL.)]
+    (spit (filename url) (e/as-str entry))
     true))

@@ -1,8 +1,9 @@
 -*-Org-*-
-
-* TODO change namespace declarations: com.snikeris.etc
-* TODO finish get-entry
+* CANCELED change namespace declarations: com.snikeris.etc
+not idiomatic
+* DONE finish get-entry
 * TODO prevent creation of two entries w/ same title, same month/year
+* TODO make test not save new entry to disk
 * Implement GET on edit-urls
 ** TODO create Compojure route
 
