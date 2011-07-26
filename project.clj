@@ -7,6 +7,5 @@
                  [com.snikeris/enlive "1.2.0-alpha1"]
                  [ring-mock "0.1.1"]
                  [clj-time "0.3.0"]]
-  :dev-dependencies [[lein-ring "0.4.5"]
-                     [swank-clojure "1.3.0"]]
+  :dev-dependencies [[lein-ring "0.4.5"]]
   :ring {:handler enlighten.core/app})
