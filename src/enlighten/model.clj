@@ -16,7 +16,7 @@
       str/lower-case))
 
 (defn edit-url
-  "returns URL of the form: <*post-url*>/2011/apr/this-is-the-title"
+  "returns URL of the form: <*post-url*>2011/apr/this-is-the-title"
   [date-time title]
   (let [month-formatter (tf/formatter "MMM")
         month (->> date-time (tf/unparse month-formatter) str/lower-case)
@@ -24,15 +24,20 @@
     (java.net.URL.
      (str/join "/" [base-url (time/year date-time) month (titleize title)]))))
 
-(defn filename [url]
+(defn filename
+  "turns an edit-url into: <*entry-dir*>2011-apr-this-is-the-title.xml"
+  [url]
   (let [[title month year] (-> url .getPath (str/split #"/") rseq)]
     (str *entry-dir* year "-" month "-" title ".xml")))
 
 (defn get-entry [url]
-  (-> url filename java.io.File. e/xml-resource))
+  (let [file (-> url filename java.io.File.)]
+    (when (.exists file)
+      (e/xml-resource file))))
 
 (defn save-entry [entry]
   (let [sel [[:link (e/attr= :rel "edit")]]
         url (-> entry (e/select-attrib sel :href) java.net.URL.)]
-    (spit (filename url) (e/as-str entry))
-    true))
+    (when-not (get-entry url)
+      (spit (filename url) (e/as-str entry))
+      true)))
