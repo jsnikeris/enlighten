@@ -25,19 +25,19 @@
      (str/join "/" [base-url (time/year date-time) month (titleize title)]))))
 
 (defn filename
-  "turns an edit-url into: <*entry-dir*>2011-apr-this-is-the-title.xml"
-  [url]
-  (let [[title month year] (-> url .getPath (str/split #"/") rseq)]
+  "defines the url-path to filesystem mapping"
+  [url-path]
+  (let [[title month year] (-> url-path (str/split #"/") rseq)]
     (str *entry-dir* year "-" month "-" title ".xml")))
 
-(defn get-entry [url]
-  (let [file (-> url filename java.io.File.)]
+(defn get-entry [url-path]
+  (let [file (-> url-path filename java.io.File.)]
     (when (.exists file)
       (e/xml-resource file))))
 
 (defn save-entry [entry]
   (let [sel [[:link (e/attr= :rel "edit")]]
-        url (-> entry (e/select-attrib sel :href) java.net.URL.)]
-    (when-not (get-entry url)
-      (spit (filename url) (e/as-str entry))
+        url-path (-> entry (e/select-attrib sel :href) java.net.URL. .getPath)]
+    (when-not (get-entry url-path)
+      (spit (filename url-path) (e/as-str entry))
       true)))

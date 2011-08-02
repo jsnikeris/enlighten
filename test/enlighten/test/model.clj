@@ -35,8 +35,8 @@
            (str url)))))
 
 (deftest filename-test
-  (let [url (java.net.URL. "http://blah.net/blahg/posts/2008/jun/short-title")]
-    (is (= (str test-dir "2008-jun-short-title.xml") (filename url)))))
+  (let [url-path "/blahg/posts/2008/jun/short-title"]
+    (is (= (str test-dir "2008-jun-short-title.xml") (filename url-path)))))
 
 (deftest save-entry-test
   (let [entry (e/xml-resource "test/post.xml")]

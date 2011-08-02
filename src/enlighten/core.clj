@@ -9,10 +9,8 @@
   (:require [compojure.route :as route]
             [net.cgrand.enlive-html :as e]
             [ring.util.response :as resp]
-            [ring.adapter.jetty :as jetty]))
-
-(e/deftemplate main "templates/main.html" []
-  [[:link (e/attr= :rel "service.post")]] (e/set-attr :href *post-url*))
+            [ring.adapter.jetty :as jetty]
+            [enlighten.view :as view]))
 
 (defn post-response [entry]
   (let [location (e/select-text entry [:link (e/attr= :rel "edit")])]
@@ -27,10 +25,17 @@
       (post-response entry)
       "Error saving entry")))           ;TODO: return error status code
 
+(defn handle-get [url-path accept]
+  (if-let [entry (get-entry url-path)]
+    (if (.contains accept *atom-type*)  ;TODO: proper accept header parsing
+      (-> entry e/emit* resp/response (resp/content-type *atom-type*))
+      (view/entry entry))))      
+
 (defroutes routes
-  (GET "/" [] (apply str (main)))
+  (GET "/" [] (apply str (view/main)))
   (POST (str *post-url*) {body :body} (handle-post body))
-  (route/resources "/"))
+  (route/resources "/")
+  (GET "/*" {{accept "accept"} :headers uri :uri} (handle-get uri accept)))
 
 (defn wrap-charset [handler charset]
   (fn [request]
