@@ -5,5 +5,10 @@
   <id>tag:localhost,2011-07-17:/2011/jul/atom-powered-robots-run-amok</id>
   <updated>2011-07-17T21:00:07.420Z</updated>
   <author><name>James</name></author>
-  <summary>Some text.</summary>
+  <summary>Robots are fighting back against their human overlords.</summary>
+  <content>
+    <p>The San Francisco Chronicle reports that  Waldo, a robot that delivers medicines at the University of California San Francisco Medical Center, went berserk.</p>
+    <p>"Waldo shot past the pharmacy and barged uninvited into the examination room in the radiation oncology department, where -- according to an anonymous caller -- a doctor was examining a cancer patient," the paper's columnists wrote. "According to the caller, Waldo wouldn't leave, and the startled doctor and patient felt obliged to flee the room."</p>
+    <p>Many believe that robots will be used to perform dangerous or menial tasks in the future. But that's what people thought in the "Planet of the Apes" movies and look what happened there.</p>
+  </content>
 </entry>

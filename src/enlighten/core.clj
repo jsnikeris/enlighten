@@ -26,10 +26,12 @@
       "Error saving entry")))           ;TODO: return error status code
 
 (defn handle-get [url-path accept]
-  (if-let [entry (get-entry url-path)]
+  (when-let [entry (get-entry url-path)]
     (if (.contains accept *atom-type*)  ;TODO: proper accept header parsing
       (-> entry e/emit* resp/response (resp/content-type *atom-type*))
-      (view/entry entry))))      
+      (view/entry (e/select-text entry [:title])
+                  (e/select-text entry [:published])
+                  (e/select entry [:content :> :*])))))
 
 (defroutes routes
   (GET "/" [] (apply str (view/main)))

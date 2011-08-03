@@ -9,7 +9,7 @@ not idiomatic
 * Implement GET on edit-urls
 ** DONE create Compojure route
 
-** TODO write entry template
+** DONE write entry template
 ** TODO write tests for handle-get
 * Before release
 ** TODO release enlive fork to clojars
