@@ -30,7 +30,7 @@
 
 (defn handle-get [url-path accept]
   (when-let [entry (m/get-entry url-path)]
-    (if (.contains accept a/*atom-type*)  ;TODO: proper accept header parsing
+    (if (.contains accept a/*atom-type*)
       (-> entry e/emit* resp/response (resp/content-type a/*atom-type*))
       (v/entry (e/select-text entry [:title])
                (e/select-text entry [:published])

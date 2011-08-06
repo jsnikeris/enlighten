@@ -4,11 +4,9 @@
             [net.cgrand.enlive-html :as e]
             (clj-time [core :as time] [format :as tf])))
 
-;; TODO: properties file?
 (def *post-url* (java.net.URL. "http://localhost:3000/"))
 (def *entry-dir* "/home/joe/Documents/Blog/Entries/")
 
-;; TODO: handle other special characters
 (defn titleize
   "Replaces spaces with dashes and lower-cases"
   [s]
