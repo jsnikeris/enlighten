@@ -1,9 +1,9 @@
 (ns enlighten.test.core
   (:use [clojure.test]
-        [ring.mock.request]
         (enlighten core atom model)
         [enlighten.test.model :only (entry-dir-fixture)])
-  (:require [net.cgrand.enlive-html :as e]))
+  (:require [net.cgrand.enlive-html :as e]
+            [ring.mock.request :as req]))
 
 (use-fixtures :each entry-dir-fixture)
 
@@ -12,8 +12,8 @@
 (defn do-post []
   (let [req-entry (e/xml-resource "test/post.xml")
         title (e/select-text [:title] req-entry)
-        req (body (request :post (str *post-url*))
-                  (e/as-str req-entry))]
+        req (req/body (req/request :post (str *post-url*))
+                      (e/as-str req-entry))]
     (app req)))
 
 (deftest happy-post
@@ -27,8 +27,8 @@
 
 (deftest happy-atom-get
   (let [{post-headers :headers post-body :body} (do-post)
-        req (-> (request :get (post-headers "Location"))
-                (header "Accept" *atom-type*))
+        req (-> (req/request :get (post-headers "Location"))
+                (req/header "Accept" *atom-type*))
         {get-headers :headers get-body :body} (app req)
         [post-id get-id] (map #(e/select-text (apply e/html-snippet %) [:id])
                               [get-body post-body])]
