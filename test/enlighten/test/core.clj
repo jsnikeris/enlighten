@@ -7,15 +7,18 @@
 
 (use-fixtures :each entry-dir-fixture)
 
-(deftest happy-post
+(defn do-post []
   (let [req-entry (e/xml-resource "test/post.xml")
         title (e/select-text [:title] req-entry)
         req (body (request :post (str *post-url*))
-                  (e/as-str req-entry))
-        {:keys [headers body]} (app req)
+                  (e/as-str req-entry))]
+    (app req)))
+
+(deftest happy-post
+  (let [{:keys [headers body]} (do-post)
         resp-entry (e/html-snippet body)
         edit-link (e/select-attrib resp-entry [(e/attr= :rel "edit")] :href)
         alt-link (e/select-attrib resp-entry [(e/attr= :rel "alternate")] :href)]
     (is (= (headers "Content-Type") "application/atom+xml; charset=utf-8"))
-    (is (= edit-link alt-link))
-    (is (.endsWith edit-link (titleize title)))))
+    (is (= edit-link alt-link (headers "Location")))
+    (is (.endsWith edit-link "atom-powered-robots-run-amok"))))
