@@ -1,10 +1,11 @@
 (ns enlighten.test.model
   (:use [enlighten.model]
         [clojure.test])
-  (:require [clj-time.format :as tf]
-            [net.cgrand.enlive-html :as e]
+  (:require (clj-time [core :as time] [format :as tf])
             [clojure.contrib.java-utils :as ju]
-            [clojure.java.io :as io]))
+            [net.cgrand.enlive-html :as e]
+            [clojure.java.io :as io])
+  (:import clojure.contrib.condition.Condition))
 
 (def test-dir (str (ju/get-system-property "java.io.tmpdir") "/enlighten/"))
 
@@ -16,6 +17,7 @@
   (binding [*entry-dir* test-dir]
     (try
       (io/make-parents (str *entry-dir* "blah"))
+      (delete-children *entry-dir*)
       (f)
       (finally
        (delete-children *entry-dir*)))))
@@ -39,6 +41,8 @@
     (is (= (str test-dir "2008-jun-short-title.xml") (filename url-path)))))
 
 (deftest save-entry-test
-  (let [entry (e/xml-resource "test/post.xml")]
-    (is (save-entry entry))
-    (is (not (save-entry entry)))))
+  (let [entry (e/xml-resource "test/post.xml")
+        edit-href (e/select-attrib entry [(e/attr= :rel "edit")] :href)]
+    (save-entry entry)
+    (is (get-entry (-> edit-href java.net.URL. .getPath)))
+    (is (thrown? Condition (save-entry entry)))))

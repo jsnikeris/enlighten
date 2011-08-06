@@ -1,5 +1,6 @@
 (ns enlighten.model
   (:require [clojure.string :as str]
+            [clojure.contrib.condition :as cond]
             [net.cgrand.enlive-html :as e]
             (clj-time [core :as time] [format :as tf])))
 
@@ -35,9 +36,12 @@
     (when (.exists file)
       (e/xml-resource file))))
 
-(defn save-entry [entry]
+(defn save-entry
+  "potentially raises a condition of type :already-exists"
+  [entry]
   (let [sel [[:link (e/attr= :rel "edit")]]
         url-path (-> entry (e/select-attrib sel :href) java.net.URL. .getPath)]
-    (when-not (get-entry url-path)
-      (spit (filename url-path) (e/as-str entry))
-      true)))
+    (if (get-entry url-path)
+      (cond/raise :type :already-exists
+        :message "An entry with this title has already been posted this month.")
+      (spit (filename url-path) (e/as-str entry)))))

@@ -4,7 +4,8 @@
 
 (ns enlighten.core
   (:use [compojure.core :only (defroutes GET POST)])
-  (:require [compojure.route :as route]
+  (:require [clojure.contrib.condition :as cond]
+            [compojure.route :as route]
             [net.cgrand.enlive-html :as e]
             [ring.util.response :as resp]
             [ring.adapter.jetty :as jetty]
@@ -19,9 +20,13 @@
 
 (defn handle-post [body]
   (let [entry (-> body e/xml-resource a/normalize-entry a/populate-entry)]
-    (if (m/save-entry entry)
+    (cond/handler-case :type
+      (m/save-entry entry)
       (post-response entry)
-      "Error saving entry")))           ;TODO: return error status code
+      (handle :already-exists
+        (-> (:message cond/*condition*)
+            resp/response
+            (resp/status 403))))))
 
 (defn handle-get [url-path accept]
   (when-let [entry (m/get-entry url-path)]
