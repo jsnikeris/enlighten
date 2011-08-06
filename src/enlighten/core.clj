@@ -51,7 +51,3 @@
 (def app
   (-> routes
       (wrap-charset "utf-8")))
-
-;; (defonce *server*
-;;   ;; #' (var) allows rebinding of 'app' to be reflected immediately
-;;   (jetty/run-jetty #'app {:port 3000 :join? false}))
