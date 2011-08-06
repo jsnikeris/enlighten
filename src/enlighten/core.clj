@@ -14,7 +14,7 @@
 
 (defn post-response [entry]
   (let [location (e/select-attrib entry [[:link (e/attr= :rel "edit")]] :href)]
-    (-> entry e/as-str resp/response
+    (-> entry e/emit* resp/response
         (resp/status 201)
         (resp/content-type *atom-type*)
         (resp/header "Location" location))))

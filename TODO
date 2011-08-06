@@ -4,12 +4,12 @@ not idiomatic
 * DONE finish get-entry
 * DONE prevent creation of two entries w/ same title, same month/year
 * DONE make test not save new entry to disk
-* TODO try e/emit* rather than e/as-str in post-response
+* DONE try e/emit* rather than e/as-str in post-response
 * TODO clean up bare uses in core.clj
 * Implement GET on edit-urls
 ** DONE create Compojure route
 
 ** DONE write entry template
-** TODO write tests for handle-get
+** DONE write tests for handle-get
 * Before release
-** TODO release enlive fork to clojars
+** DONE release enlive fork to clojars
