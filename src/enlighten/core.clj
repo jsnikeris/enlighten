@@ -32,12 +32,9 @@
   (when-let [entry (m/get-entry url-path)]
     (if (.contains accept a/*atom-type*)
       (-> entry e/emit* resp/response (resp/content-type a/*atom-type*))
-      (v/entry (e/select-text entry [:title])
-               (e/select-text entry [:published])
-               (e/select entry [:content :> :*])))))
+      (v/entry entry))))
 
 (defroutes routes
-  (GET "/" [] (apply str (v/main)))
   (POST (str m/*post-url*) {body :body} (handle-post body))
   (route/resources "/")
   (GET "/*" {{accept "accept"} :headers uri :uri} (handle-get uri accept)))

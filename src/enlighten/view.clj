@@ -1,13 +1,15 @@
 (ns enlighten.view
   (:require [net.cgrand.enlive-html :as e]
+            [clj-time.format :as tf]
             [enlighten.model :as m]))
 
-(e/deftemplate main "templates/main.html" []
-  [[:link (e/attr= :rel "service.post")]] (e/set-attr :href m/*post-url*))
+(defn pprint-date [s]
+  (tf/unparse (tf/formatter "MMMM d, yyyy") (tf/parse s)))
 
-(e/deftemplate entry "templates/main.html" [title pub-date content-nodes]
-  [#{:title :#title}] (e/content title)
-  [:article :> :header :> :time] (e/do-> (e/content pub-date)
-                                         (e/set-attr :datetime pub-date))
-  [:article :p] nil
-  [:article :header] (e/after content-nodes))
+(e/deftemplate entry "templates/main.html" [entry]
+  [#{:title :#title}] (e/content (e/select-text entry [:title]))
+  [:#content] (e/content (e/select entry [:content :> :*]))
+  [[:time (e/attr? :pubdate)]]
+    #(let [pub-date (e/select-text entry [:published])]
+       ((e/do-> (e/content (pprint-date pub-date))
+                (e/set-attr :datetime pub-date)) %)))
