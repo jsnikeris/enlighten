@@ -31,8 +31,12 @@
     (str *entry-dir* year "-" month "-" title ".xml")))
 
 (defn get-entries []
-  (for [file (-> *entry-dir* io/file .listFiles)]
-    (-> file e/xml-resource first)))
+  "returns entries in descending order by published date"
+  (let [entries (for [file (-> *entry-dir* io/file .listFiles)]
+                  (-> file e/xml-resource first))]
+    (apply sorted-set-by #(compare (e/select-text %2 [:published])
+                                   (e/select-text %1 [:published]))
+           entries)))
 
 (defn get-entry [url-path]
   (let [sel [[:link (e/attr= :rel "edit") (e/attr-ends :href url-path)]]
