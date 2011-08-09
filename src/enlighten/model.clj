@@ -1,5 +1,6 @@
 (ns enlighten.model
   (:require [clojure.string :as str]
+            [clojure.java.io :as io]
             [clojure.contrib.condition :as cond]
             [net.cgrand.enlive-html :as e]
             (clj-time [core :as time] [format :as tf])))
@@ -29,10 +30,18 @@
   (let [[title month year] (-> url-path (str/split #"/") rseq)]
     (str *entry-dir* year "-" month "-" title ".xml")))
 
+(defn get-entries []
+  (for [file (-> *entry-dir* io/file .listFiles)]
+    (-> file e/xml-resource first)))
+
 (defn get-entry [url-path]
-  (let [file (-> url-path filename java.io.File.)]
-    (when (.exists file)
-      (e/xml-resource file))))
+  (let [sel [[:link (e/attr= :rel "edit") (e/attr-ends :href url-path)]]
+        entries (filter #(e/select? % sel) (get-entries))]
+    (case (count entries)
+      0 nil
+      1 (first entries)
+      (cond/raise :type :multiple-entries :message (str
+        "More than one entry in the collection matches: " url-path)))))
 
 (defn save-entry
   "potentially raises a condition of type :already-exists"
