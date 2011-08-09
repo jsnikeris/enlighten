@@ -47,6 +47,12 @@
       (cond/raise :type :multiple-entries :message (str
         "More than one entry in the collection matches: " url-path)))))
 
+(defn prev-entry [entry]
+  (first (subseq (get-entries) > entry)))
+
+(defn next-entry [entry]
+  (first (rsubseq (get-entries) < entry)))
+
 (defn save-entry
   "potentially raises a condition of type :already-exists"
   [entry]
