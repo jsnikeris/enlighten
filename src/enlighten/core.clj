@@ -12,7 +12,7 @@
             (enlighten [view :as v] [atom :as a] [model :as m])))
 
 (defn post-response [entry]
-  (let [location (e/select-attrib entry [[:link (e/attr= :rel "edit")]] :href)]
+  (let [location (e/select-attr entry [[:link (e/attr= :rel "edit")]] :href)]
     (-> entry e/emit* resp/response
         (resp/status 201)
         (resp/content-type a/*atom-type*)

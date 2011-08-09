@@ -19,8 +19,8 @@
 (deftest happy-post
   (let [{:keys [headers body]} (do-post)
         resp-entry (apply e/html-snippet body)
-        edit-link (e/select-attrib resp-entry [(e/attr= :rel "edit")] :href)
-        alt-link (e/select-attrib resp-entry [(e/attr= :rel "alternate")] :href)]
+        edit-link (e/select-attr resp-entry [(e/attr= :rel "edit")] :href)
+        alt-link (e/select-attr resp-entry [(e/attr= :rel "alternate")] :href)]
     (is (= (headers "Content-Type") *atom-header*))
     (is (= edit-link alt-link (headers "Location")))
     (is (.endsWith edit-link "atom-powered-robots-run-amok"))))

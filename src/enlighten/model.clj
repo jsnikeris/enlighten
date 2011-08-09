@@ -47,7 +47,7 @@
   "potentially raises a condition of type :already-exists"
   [entry]
   (let [sel [[:link (e/attr= :rel "edit")]]
-        url-path (-> entry (e/select-attrib sel :href) java.net.URL. .getPath)]
+        url-path (-> entry (e/select-attr sel :href) java.net.URL. .getPath)]
     (if (get-entry url-path)
       (cond/raise :type :already-exists
         :message "An entry with this title has already been posted this month.")

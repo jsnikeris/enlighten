@@ -42,7 +42,7 @@
 
 (deftest save-entry-test
   (let [entry (e/xml-resource "test/post.xml")
-        edit-href (e/select-attrib entry [(e/attr= :rel "edit")] :href)]
+        edit-href (e/select-attr entry [(e/attr= :rel "edit")] :href)]
     (save-entry entry)
     (is (get-entry (-> edit-href java.net.URL. .getPath)))
     (is (thrown? Condition (save-entry entry)))))
