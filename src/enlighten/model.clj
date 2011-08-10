@@ -3,7 +3,8 @@
             [clojure.java.io :as io]
             [clojure.contrib.condition :as cond]
             [net.cgrand.enlive-html :as e]
-            (clj-time [core :as time] [format :as tf])))
+            (clj-time [core :as time] [format :as tf])
+            [enlighten.atom :as a]))
 
 (def *post-url* (java.net.URL. "http://localhost:3000/"))
 (def *entry-dir* "/home/joe/Documents/Blog/Entries/")
@@ -56,8 +57,7 @@
 (defn save-entry
   "potentially raises a condition of type :already-exists"
   [entry]
-  (let [sel [[:link (e/attr= :rel "edit")]]
-        url-path (-> entry (e/select-attr sel :href) java.net.URL. .getPath)]
+  (let [url-path (-> entry a/permalink java.net.URL. .getPath)]
     (if (get-entry url-path)
       (cond/raise :type :already-exists
         :message "An entry with this title has already been posted this month.")

@@ -1,7 +1,6 @@
 ;; functions for manipulating atom entries
 
 (ns enlighten.atom
-  (:use [enlighten.model :only (edit-url)])
   (:require [clj-time.format :as tf]
             [net.cgrand.enlive-html :as e]))
 
