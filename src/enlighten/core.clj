@@ -21,8 +21,7 @@
 
 (defn populate-entry [entry]
   (let [pub-date (time/now)
-        title (e/select-text entry [:title])
-        url (m/edit-url pub-date title)
+        url (m/edit-url pub-date (e/select-text entry [:title]))
         id (a/make-tag-uri pub-date url)]
     (e/at entry
       [[:link #{(e/attr= :rel "edit") (e/attr= :rel "alternate")}]]
