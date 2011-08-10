@@ -5,6 +5,7 @@
 (ns enlighten.core
   (:use [compojure.core :only (defroutes GET POST)])
   (:require [clojure.contrib.condition :as cond]
+            [clj-time.core :as time]
             [compojure.route :as route]
             [net.cgrand.enlive-html :as e]
             [ring.util.response :as resp]
@@ -18,8 +19,19 @@
         (resp/content-type a/*atom-type*)
         (resp/header "Location" location))))
 
+(defn populate-entry [entry]
+  (let [pub-date (time/now)
+        title (e/select-text entry [:title])
+        url (m/edit-url pub-date title)
+        id (a/make-tag-uri pub-date url)]
+    (e/at entry
+      [[:link #{(e/attr= :rel "edit") (e/attr= :rel "alternate")}]]
+        (e/set-attr :href (str url))
+      [:id] (e/content id)
+      [#{:published :updated}] (e/content (str pub-date)))))
+
 (defn handle-post [body]
-  (let [entry (-> body e/xml-resource a/normalize-entry a/populate-entry)]
+  (let [entry (-> body e/xml-resource a/normalize-entry populate-entry)]
     (cond/handler-case :type
       (m/save-entry entry)
       (post-response entry)
