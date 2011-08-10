@@ -11,6 +11,15 @@
    :next (a/permalink (m/next-entry entry))
    :last (a/permalink (first (m/get-entries)))})
 
+(defn link-transformation [entry]
+  #(let [ctxt (link-context [entry])
+         link-sel #{[:a] [:link]}
+         rel-kw (keyword (e/select-attr % link-sel :rel))]
+     (if (contains? ctxt rel-kw)
+       (when-let [href (rel-kw ctxt)]
+         (e/at % link-sel (e/set-attr :href href)))
+       %)))
+
 (e/deftemplate entry "templates/entry.html" [entry]
   [#{:title :#title}] (e/content (e/select-text entry [:title]))
   [:#content] (e/content (e/select entry [:content :> :*]))
@@ -18,11 +27,4 @@
     #(let [pub-date (e/select-text entry [:published])]
        ((e/do-> (e/content (pprint-date pub-date))
                 (e/set-attr :datetime pub-date)) %))
-  #{[:nav :li] [:link]}
-    #(let [ctxt (link-context [entry])
-           link-sel #{[:a] [:link]}
-           rel-kw (keyword (e/select-attr % link-sel :rel))]
-       (if (contains? ctxt rel-kw)
-         (when-let [href (rel-kw ctxt)]
-           (e/at % link-sel (e/set-attr :href href)))
-         %)))
+  #{[:nav :li] [:link]} (link-transformation entry))
