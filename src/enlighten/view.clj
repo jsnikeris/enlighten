@@ -6,7 +6,7 @@
 (defn pprint-date [s]
   (tf/unparse (tf/formatter "MMMM d, yyyy") (tf/parse s)))
 
-(e/deftemplate entry "templates/main.html" [entry]
+(e/deftemplate entry "templates/entry.html" [entry]
   [#{:title :#title}] (e/content (e/select-text entry [:title]))
   [:#content] (e/content (e/select entry [:content :> :*]))
   [[:time (e/attr? :pubdate)]]
