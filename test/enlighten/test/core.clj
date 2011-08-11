@@ -12,7 +12,7 @@
 (defn do-post []
   (let [req-entry (e/xml-resource "test/post.xml")
         title (e/select-text [:title] req-entry)
-        req (req/body (req/request :post (str *post-url*))
+        req (req/body (req/request :post (:collection-uri *config*))
                       (e/as-str req-entry))]
     (app req)))
 

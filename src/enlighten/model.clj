@@ -6,8 +6,8 @@
             (clj-time [core :as time] [format :as tf])
             [enlighten.atom :as a]))
 
-(def *post-url* (java.net.URL. "http://localhost:3000/"))
-(def *entry-dir* "/home/joe/Documents/Blog/Entries/")
+(def *config*
+  (read-string (slurp (io/resource "config.clj"))))
 
 (defn titleize
   "Replaces spaces with dashes and lower-cases"
@@ -17,11 +17,11 @@
       str/lower-case))
 
 (defn edit-url
-  "returns URL of the form: <*post-url*>2011/apr/this-is-the-title"
+  "returns URL of the form: <collection-uri>2011/apr/this-is-the-title"
   [date-time title]
   (let [month-formatter (tf/formatter "MMM")
         month (->> date-time (tf/unparse month-formatter) str/lower-case)
-        [_ base-url] (re-find #"(.*?)/?$" (str *post-url*))]
+        [_ base-url] (re-find #"(.*?)/?$" (:collection-uri *config*))]
     (java.net.URL.
      (str/join "/" [base-url (time/year date-time) month (titleize title)]))))
 
@@ -29,11 +29,11 @@
   "defines the url-path to filesystem mapping"
   [url-path]
   (let [[title month year] (-> url-path (str/split #"/") rseq)]
-    (str *entry-dir* year "-" month "-" title ".xml")))
+    (str (:entry-dir *config*) year "-" month "-" title ".xml")))
 
 (defn get-entries []
   "returns entries in descending order by published date"
-  (let [entries (for [file (-> *entry-dir* io/file .listFiles)]
+  (let [entries (for [file (-> *config* :entry-dir io/file .listFiles)]
                   (-> file e/xml-resource first))]
     (apply sorted-set-by #(compare (e/select-text %2 [:published])
                                    (e/select-text %1 [:published]))

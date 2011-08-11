@@ -8,22 +8,24 @@
   (:import clojure.contrib.condition.Condition))
 
 (def test-dir (str (ju/get-system-property "java.io.tmpdir") "/enlighten/"))
+(def test-uri "https://test.blog.net/blog")
 
 (defn delete-children [dir]
   (doseq [file (.listFiles (io/file dir))]
     (io/delete-file file)))
 
 (defn entry-dir-fixture [f]
-  (binding [*entry-dir* test-dir]
-    (try
-      (io/make-parents (str *entry-dir* "blah"))
-      (delete-children *entry-dir*)
-      (f)
-      (finally
-       (delete-children *entry-dir*)))))
+  (binding [*config* (assoc *config* :entry-dir test-dir)]
+    (let [dir (:entry-dir *config*)]
+      (try
+        (io/make-parents dir "blah")
+        (delete-children dir)
+        (f)
+        (finally
+         (delete-children dir))))))
 
 (defn post-url-fixture [f]
-  (binding [*post-url* (java.net.URL. "https://test.blog.net/blog")]
+  (binding [*config* (assoc *config* :collection-uri test-uri)]
     (f)))
 
 (use-fixtures :each entry-dir-fixture post-url-fixture)

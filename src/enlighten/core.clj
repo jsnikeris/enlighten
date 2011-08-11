@@ -46,7 +46,7 @@
       (v/entry entry))))
 
 (defroutes routes
-  (POST (str m/*post-url*) {body :body} (handle-post body))
+  (POST (:collection-uri m/*config*) {body :body} (handle-post body))
   (route/resources "/")
   (GET "/*" {{accept "accept"} :headers uri :uri} (handle-get uri accept)))
 
