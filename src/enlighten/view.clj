@@ -9,7 +9,7 @@
 (defn link-context [entry]
   {:prev (a/permalink (m/prev-entry entry))
    :next (a/permalink (m/next-entry entry))
-   :last (a/permalink (first (m/get-entries)))
+   :current (a/permalink (first (m/get-entries)))
    :index (:collection-uri m/*config*)})
 
 (defn link-transformation [entry]
