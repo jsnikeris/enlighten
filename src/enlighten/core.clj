@@ -54,6 +54,7 @@
     (v/entries)))
 
 (defroutes routes
+  (GET "/" [] (resp/redirect (:about-uri m/*config*)))
   (POST (:collection-uri m/*config*) {body :body} (handle-post body))
   (GET (:collection-uri m/*config*) {{accept-header "accept"} :headers}
     (handle-get-collection accept-header))

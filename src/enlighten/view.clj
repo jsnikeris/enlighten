@@ -10,7 +10,8 @@
   {:prev (a/permalink (m/prev-entry entry))
    :next (a/permalink (m/next-entry entry))
    :current (a/permalink (first (m/get-entries)))
-   :index (:collection-uri m/*config*)})
+   :index (:collection-uri m/*config*)
+   :author (:about-uri m/*config*)})
 
 (defn link-transformation [entry]
   #(let [ctxt (link-context [entry])
