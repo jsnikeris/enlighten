@@ -17,10 +17,9 @@
       str/lower-case))
 
 (defn edit-url
-  "returns URL of the form: <collection-uri>2011/apr/this-is-the-title"
+  "returns URL of the form: <collection-uri>2011/4/this-is-the-title"
   [date-time title]
-  (let [month-formatter (tf/formatter "MMM")
-        month (->> date-time (tf/unparse month-formatter) str/lower-case)
+  (let [month (->> date-time (tf/unparse (tf/formatter "M")) str/lower-case)
         [_ base-url] (re-find #"(.*?)/?$" (:collection-uri *config*))]
     (java.net.URL.
      (str/join "/" [base-url (time/year date-time) month (titleize title)]))))
