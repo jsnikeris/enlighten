@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Document   : elem_logic/ch4.html
+   Created on : 2010-10-21
+   Author     : joe@snikeris.com
+  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Elementary Logic: Chapter 4 Solutions</title>
+  </head>
+  <body>
+    <h1>Elementary Logic: Chapter 4 Solutions</h1>
+    <p>
+      In all of the exercises that follow, when asked to give an interpretation,
+      I have taken the liberty to assign denotations only to the non-logical
+      constants that appear in the sentences under consideration.  As you might
+      remember, Mates defines an interpretation such that all of the
+      non-logical constants of <b>L</b> are assigned denotations.  
+    </p>
+
+    <div id="ex1">
+      <h2>Exercise 1</h2>
+      <p>
+	Let &psi; be any sentence, and let -&phi; be a valid sentence.  -&phi;
+	is true under every interpretation since it is valid.  It follows that
+	&phi; must be false under every interpretation since it is the negation
+	of -&phi;.  Clearly, there can be no interpretation under which &phi;
+	is true and &psi; is false, since &phi; can not be true under any
+	interpretation.  Therefore, &psi; is a consequence of &phi; and since
+	&psi; can be any sentence at all, every sentence is a consequence of
+	&phi;.
+      </p>
+    </div>
+
+    <div id="ex2">
+      <h2>Exercise 2</h2>
+      <p>
+	Let &theta; be any sentence, and suppose {&phi;,&psi;} is a set of
+	inconsistant sentences.  There is no interpretation for which both &phi;
+	and &psi; are true since they are inconsistant.  Clearly, there can be
+	no interpretation for which both &phi; and &psi; are true and &theta; is
+	false since &phi; and &psi; are both true under no interpretation.
+	Therefore, &theta; is a consequence of {&phi;,&psi;}, and since &theta;
+	can be any sentence, every sentence is a consequence of {&phi;,&psi;}.
+      </p>
+    </div>
+
+    <div id="ex3">
+      <h2>Exercise 3</h2>
+      <p>
+	Let &Gamma; be any set of sentences and &phi; be a valid sentence.
+	&phi; is true under every interpretations since it is valid.  Trivially,
+	&phi; is false under no interpretations.  Clearly, there is no
+	interpretation under which all the sentences of &Gamma; are true and
+	&phi; is false since &phi; is false under no interpretations.
+	Therefore, &phi; is a consequence of &Gamma; and since &Gamma; can be
+	any set of sentences, &phi; is a consequence of every set of sentences.
+      </p>
+    </div>
+
+    <div id="ex4">
+      <h2>Exercise 4</h2>
+      <p>
+	Let &phi; and &psi; be sentences.  &psi; is a consequence of &phi; if
+	and only if there is no interpretation under which &phi; is true and
+	&psi; is false.  This holds if and only if there is no interpretation
+	under which (&phi; &rarr; &psi;) is false.  Said another way, this
+	holds if and only if (&phi; &rarr; &psi;) is true under every
+	interpretation.  Therefore, &psi; is a consequence of &phi; if and only
+	if (&phi; &rarr; &psi;) is valid.
+      </p>
+    </div>
+
+    <div id="ex5">
+      <h2>Exercise 5</h2>
+      <p>
+	If -&phi; is a valid sentence then -&phi; is true under every
+	interpretation and &phi; is false under every interpretation.  Said
+	another way, there is no interpretation under which &phi; is true.
+	Therefore, there is no interpretation under which all the sentences of
+	{&phi;} are true so, &phi; is inconsistant with itself (and with any
+	other set of sentences it is included in).
+      </p>
+    </div>
+
+    <div id="ex6">
+      <h2>Exercise 6</h2>
+      <p>
+	Domain: set of all people
+	<i>F</i>: set of people with a brain
+	<i>a</i>: Albert Einstein
+      </p>
+    </div>
+        
+    <div id="ex7">
+      <h2>Exercise 7</h2>
+      <ul>
+        <li>
+	    Domain: set of all people<br />
+	    <i>F</i><sup>1</sup>: set of all men<br />
+	    <i>a</i>: Socrates<br /><br />
+	</li>
+	
+	<li>
+	  Domain: set of all people<br />
+	  <i>F</i><sup>1</sup>: set of all men<br />
+	  <i>a</i>: Queen Elizabeth<br /><br />
+	</li>
+	
+	<li>
+	  Domain: set of all people<br />
+	  <i>F</i><sup>1</sup><sub>1</sub>: set of all men<br />
+	  <i>a</i>: Queen Elizabeth<br /><br />
+	</li>
+	
+	<li>
+	  Domain: set of all people<br />
+	  <i>F</i><sup>1</sup><sub>1</sub>: set of all men
+	</li>
+      </ul>
+    </div>
+
+    <div id="ex8">
+      <h2>Exercise 8</h2>
+      <p>
+	In short, because they are both valid sentences.  In the case of (6),
+	for the sentence to be false, <i>F</i><sup>1</sup><sub>1</sub><i>a</i>
+	must be false and (<i>x</i>)<i>F</i><sup>1</sup><sub>1</sub><i>x</i>
+	must be true.  However, the latter implies that the former is true, 
+	since if <i>F</i><sup>1</sup><sub>1</sub> holds fonr every member in the
+	domain, it certainly holds for one particular member.  Therefore,
+	there can be no interpretation under which the sentence is false, which
+	means it's valid.
+      </p>
+
+      <p>
+	In the case of (10), let <b>I</b> be any interpretation and let &beta;
+	be any individual constant in the domain of <b>I</b>.  Trivially,
+	<i>F</i><sup>1</sup><sub>1</sub><i>&beta;</i>&or;
+	-<i>F</i><sup>1</sup><sub>1</sub><i>&beta;</i> is true under <b>I</b>.
+	Since &beta; can be any any individual constant, this holds for every
+	individual constant of <b>I</b>, and since <b>I</b> can be any
+	interpretation, (10) is valid.
+      </p>
+    </div>
+
+    <div id="ex9">
+      <h2>Exercise 9</h2>
+      <ol type="a">
+	<li id="ex9a">
+	  Domain: set of all shapes<br />
+	  <i>F</i>: set of all rectangles<br />
+	  <i>G</i>: set of all squares<br />
+	  <i>a</i>: a rectangle having width 3 and height 2<br /><br />
+	</li>
+	
+	<li id="ex9b">
+	  Domain: set of all people<br />
+	  <i>F</i>: set of all fathers<br />
+	  <i>G</i>: set of all people<br />
+	  <i>H</i>: set of all mothers<br /><br />
+	</li>
+	
+	<li id="ex9c">
+	  Domain: set of all people<br />
+	  <i>F</i>: set of all fathers<br />
+	  <i>G</i>: set of all mothers<br /><br />
+	</li>
+	
+	<li id="ex9d">
+	  Domain: set of integers<br />
+	  <i>F</i>: the less than relation<br /><br />
+	</li>
+	
+	<li id="ex9e">
+	  Domain: set of all people<br />
+	  <i>F</i>: set of all men<br />
+	  <i>G</i>: set of all women<br /><br />
+	</li>
+	
+	<li id="ex9f">
+	  Domain: set of all people<br />
+	  <i>F</i>: set of all people<br />
+	  <i>G</i>: set of all men<br />
+	  <i>a</i>: Mother Teresa<br /><br />
+	</li>
+	
+	<li id="ex9g">
+	  Domain: set of all people<br />
+	  <i>F</i>: set of all doctors<br />
+	  <i>G</i>: set of medical professionals<br />
+	  <i>a</i>: Mark Twain<br /><br />
+	</li>
+	
+	<li id="ex9h">
+	  Domain: {1} (could be any non-empty set)<br />
+	  <i>P</i>: true<br />
+	  <i>Q</i>: false<br />
+	  <i>R</i>: true
+	</li>
+      </ol>
+    </div>
+
+    <div id="ex10">
+      <h2>Exercise 10</h2>
+      <p>
+	To show that a set of sentences is consistent, it is enough to give an
+	interpretation under which all the sentences in the set are true.
+      </p>
+      <ol type="a">
+	<li id="ex10a">
+	  Domain: set of integers<br />
+	  <i>F</i>: less than relation<br />
+	  <i>G</i>: set of negative integers<br /><br />
+	</li>
+	
+	<li id="ex10b">
+	  Domain: set of all people<br />
+	  <i>P</i>: set of all women<br />
+	  <i>Q</i>: set of all men<br />
+	  <i>R</i>: set of all fathers<br /><br />
+	</li>
+	
+	<li id="ex10c">
+	  Domain: set of integers<br />
+	  <i>F</i>: less than relation<br />
+	</li>
+      </ol>
+    </div>
+
+    <div id="ex11">
+      <h2>Exercise 11</h2>
+      <p>
+	There must be enough elements so that a unique element can be assigned
+	to both <i>a</i> and <i>b</i>, in other words, two.
+      </p>
+
+      <p>
+	(((<i>Fa</i> &amp; -<i>Fb</i>) &amp; -<i>Fc</i>) &amp; 
+          (<i>Gb</i> &amp; -<i>Gc</i>))
+      </p>
+
+      <p>
+	(((<i>x</i>)-<i>Fxx</i> &amp;
+	(<i>x</i>)(&exist;<i>y</i>)<i>Fxy</i>) &amp;
+	(<i>x</i>)(<i>y</i>)(<i>z</i>)((<i>Fxy</i> &amp; <i>Fyz</i>) &rarr;
+	                                                            <i>Fxz</i>))
+      </p>
+    </div>
+
+    <div id="ex12">
+      <h2>Exercise 12</h2>
+      <p>
+	For the sentence to be false, the sentences
+	(<i>P</i> &rarr; <i>Q</i>) and (<i>Q</i> &rarr; <i>R</i>) must both be
+	false.  If the former is false, then P must be true and Q must be false.
+	However if Q is false, (<i>Q</i> &rarr; <i>R</i>) is always true; and
+	therefore the disjunction can never be false under any interpretation.
+      </p>
+    </div>
+
+    <hr />
+    <address>
+      Last updated: 2010-10-21 by
+      <a href="http://joe.snikeris.com/contact.html">Joe Snikeris</a>
+    </address>
+  </body>
+</html>

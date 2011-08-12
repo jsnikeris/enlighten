@@ -1,0 +1,100 @@
+%%% This file has been annotated.  All annotations begin with '%%%'
+%%%
+%%%============================================================================
+%%%								|Compilation|
+%%%                                                             |___________|
+%%%
+Standard ML of New Jersey v110.67 [built: Fri Nov  7 09:33:02 2008]
+- [opening /tmp/sml20479SUT]
+datatype formula
+  = & of formula * formula
+  | --> of formula * formula
+  | <-> of formula * formula
+  | P
+  | Q
+  | R
+  | S
+  | T
+  | v of formula * formula
+  | ~ of formula
+infix &
+infix v
+infix -->
+infix <->
+val toString = fn : formula -> string
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[autoloading done]
+val compareFormula = fn : formula * formula -> order
+[autoloading]
+[library $SMLNJ-LIB/Util/smlnj-lib.cm is stable]
+[autoloading done]
+structure FormulaSet : ORD_SET?
+structure FormulaSetSet : ORD_SET?
+val traceOn = false : bool
+val listDb = fn : FormulaSetSet.set -> FormulaSet.item list list
+val printClause = fn : formula list -> unit
+val printDb = fn : FormulaSetSet.set -> unit
+val remConds = fn : formula -> formula
+val pushNegations = fn : formula -> formula
+val remDoubNeg = fn : formula -> formula
+val distribute = fn : formula -> formula
+val cnf = fn : formula -> formula
+val isLiteral = fn : formula -> bool
+exception NotAClause of formula
+val clauseToSet = fn : formula -> FormulaSet.set
+val containsPOrNotP = fn : FormulaSet.set -> bool
+val cnfToDb = fn : formula -> FormulaSetSet.set
+val resolve = fn : FormulaSet.set * FormulaSet.set -> FormulaSet.set option
+val resolveOnce = fn
+  : FormulaSetSet.set * FormulaSetSet.set * FormulaSet.set
+    -> FormulaSetSet.set
+val isConsistent = fn : FormulaSetSet.set -> bool
+val isTautology = fn : formula -> bool
+val formulas =
+  [(P,false),(~ P,false),(~ (~ P),false),(~ (~ (~ #)),false),(P --> Q,false),
+   (P v ~ P,true),(P v Q --> P,false),(P <-> Q,false),
+   (# --> # --> S --> (# --> # --> (# --> #)),true),(~ S & ~ T,false),
+   (P --> Q & (Q --> R),false),(# --> # & (# --> #) --> (P --> R),true),...]
+  : (formula * bool) list
+[autoloading]
+[autoloading done]
+val testAll = fn : int -> unit
+val prove = fn : formula * formula -> bool
+val premises = P <-> S & (T --> (R v P)) & (R --> (P v S)) : formula
+val goal = T --> S : formula
+val it = () : unit
+%%%============================================================================
+%%%								|Test Cases|
+%%%								|__________|
+%%%
+- testAll 0;
+CORRECT		P is not a tautology.
+CORRECT		~P is not a tautology.
+CORRECT		~~P is not a tautology.
+CORRECT		~~~P is not a tautology.
+CORRECT		(P --> Q) is not a tautology.
+CORRECT		(P v ~P) is a tautology.
+CORRECT		((P v Q) --> P) is not a tautology.
+CORRECT		(P <-> Q) is not a tautology.
+CORRECT		((((P --> Q) --> R) --> S) --> ((Q --> R) --> (P --> S))) is a tautology.
+CORRECT		(~S & ~T) is not a tautology.
+CORRECT		((P --> Q) & (Q --> R)) is not a tautology.
+CORRECT		(((P --> Q) & (Q --> R)) --> (P --> R)) is a tautology.
+CORRECT		((P & Q) --> P) is a tautology.
+CORRECT		((P --> Q) --> (~Q --> ~P)) is a tautology.
+CORRECT		((P --> ~Q) v (~P & ~Q)) is not a tautology.
+CORRECT		((P --> ~Q) v (P & Q)) is a tautology.
+CORRECT		((P --> Q) <-> (~Q --> ~P)) is a tautology.
+CORRECT		((P --> Q) --> (~Q --> ~P)) is a tautology.
+CORRECT		((~Q --> ~P) --> (P --> Q)) is a tautology.
+CORRECT		(P --> ((P --> Q) <-> Q)) is a tautology.
+CORRECT		(((P & Q) --> R) <-> ((P & ~R) --> Q)) is not a tautology.
+CORRECT		((P --> ~Q) v (~P & ~Q)) is not a tautology.
+CORRECT		(P --> (~P --> Q)) is a tautology.
+CORRECT		((~P --> Q) --> (~Q --> P)) is a tautology.
+CORRECT		((~P --> P) --> P) is a tautology.
+CORRECT		((~P --> P) --> ~P) is not a tautology.
+CORRECT		(~(P --> Q) --> P) is a tautology.
+val it = () : unit
+- 
