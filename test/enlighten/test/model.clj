@@ -35,7 +35,7 @@
 
 (deftest edit-url-test
   (let [url (edit-url (tf/parse "2013-11-25") "This is the title")]
-    (is (= "https://test.blog.net/blog/2013/nov/this-is-the-title"
+    (is (= "https://test.blog.net/blog/2013/11/this-is-the-title"
            (str url)))))
 
 (deftest filename-test
