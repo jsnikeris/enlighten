@@ -39,16 +39,27 @@
             resp/response
             (resp/status 403))))))
 
-(defn handle-get [url-path accept]
+(defn return-atom? [accept-header]
+  (.contains accept-header a/*atom-type*))
+
+(defn handle-get [url-path accept-header]
   (when-let [entry (m/get-entry url-path)]
-    (if (.contains accept a/*atom-type*)
+    (if (return-atom? accept-header)
       (-> entry e/emit* resp/response (resp/content-type a/*atom-type*))
       (v/entry entry))))
 
+(defn handle-get-collection [accept-header]
+  (if (return-atom? accept-header)
+    "coming soon"
+    (v/entries)))
+
 (defroutes routes
   (POST (:collection-uri m/*config*) {body :body} (handle-post body))
+  (GET (:collection-uri m/*config*) {{accept-header "accept"} :headers}
+    (handle-get-collection accept-header))
   (route/resources "/")
-  (GET "/*" {{accept "accept"} :headers uri :uri} (handle-get uri accept)))
+  (GET "/*" {{accept-header "accept"} :headers uri :uri}
+    (handle-get uri accept-header)))
 
 (defn wrap-charset [handler charset]
   (fn [request]
