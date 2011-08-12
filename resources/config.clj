@@ -1,5 +1,5 @@
 {
- :collection-uri "http://localhost:3000/entries/"
- :about-uri "http://localhost:3000/entries/2011/8/about-me"
- :entry-dir "/home/joe/Documents/Blog/Entries/"
+ :collection-uri "http://joe.snikeris.com/entries/"
+ :about-uri "http://joe.snikeris.com/entries/2011/8/about-me"
+ :entry-dir "/home/blog/Entries/"
 }
