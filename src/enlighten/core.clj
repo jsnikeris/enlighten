@@ -10,7 +10,8 @@
             [net.cgrand.enlive-html :as e]
             [ring.util.response :as resp]
             [ring.adapter.jetty :as jetty]
-            (enlighten [view :as v] [atom :as a] [model :as m])))
+            (enlighten [view :as v] [atom :as a] [model :as m]))
+  (:gen-class))
 
 (defn post-response [entry]
   (let [location (e/select-attr entry [[:link (e/attr= :rel "edit")]] :href)]
@@ -76,3 +77,6 @@
 (def app
   (-> routes
       (wrap-charset "utf-8")))
+
+(defn -main [& args]
+  (jetty/run-jetty app {:port (:port m/*config*)}))
