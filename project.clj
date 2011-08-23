@@ -1,4 +1,4 @@
-(defproject enlighten "0.1.1"
+(defproject enlighten "0.1.2"
   :description
   "An atom-enabled blog, written in Clojure, starring Compojure and Enlive."
   :dependencies [[org.clojure/clojure "1.2.1"]
