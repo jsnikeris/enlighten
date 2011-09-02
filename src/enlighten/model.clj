@@ -53,11 +53,5 @@
 (defn next-entry [entry]
   (first (rsubseq (get-entries) < entry)))
 
-(defn save-entry
-  "potentially raises a condition of type :already-exists"
-  [entry]
-  (let [url-path (-> entry a/permalink java.net.URL. .getPath)]
-    (if (get-entry url-path)
-      (cond/raise :type :already-exists
-        :message "An entry with this title has already been posted this month.")
-      (spit (filename url-path) (e/as-str entry)))))
+(defn save-entry [entry]
+  (spit (filename (a/url-path entry)) (e/as-str entry)))

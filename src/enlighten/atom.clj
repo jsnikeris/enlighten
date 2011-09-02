@@ -14,6 +14,9 @@
 (defn permalink [entry]
   (e/select-attr entry [[:link (e/attr= :rel "edit")]] :href))
 
+(defn url-path [entry]
+  (-> entry permalink java.net.URL. .getPath))
+
 (defn make-tag-uri
   "returns a tag URI given a DateTime and a URL"
   [date url]

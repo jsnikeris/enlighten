@@ -34,3 +34,20 @@
                               [get-body post-body])]
     (is (= (get-headers "Content-Type") *atom-header*))
     (is (= post-id get-id))))
+
+(defn update [entry]
+  (app
+   (-> (req/request :put (permalink entry))
+       (req/body (e/as-str entry)))))
+
+(defn retrieve [entry]
+  (let [{:keys [body]} (app
+                        (-> (req/request :get (permalink entry))
+                            (req/header "Accept" *atom-type*)))]
+    (first (apply e/html-snippet body))))
+
+(deftest happy-put
+  (let [orig-entry (apply e/html-snippet (:body (do-post)))
+        new-entry (e/at orig-entry [:content] (e/content "new content"))]
+    (update new-entry)
+    (is (= (e/select-text (retrieve new-entry) [:content]) "new content"))))

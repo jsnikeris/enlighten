@@ -4,8 +4,7 @@
   (:require (clj-time [core :as time] [format :as tf])
             [clojure.contrib.java-utils :as ju]
             [net.cgrand.enlive-html :as e]
-            [clojure.java.io :as io])
-  (:import clojure.contrib.condition.Condition))
+            [clojure.java.io :as io]))
 
 (def test-dir (str (ju/get-system-property "java.io.tmpdir") "/enlighten/"))
 (def test-uri "https://test.blog.net/blog")
@@ -46,5 +45,4 @@
   (let [entry (e/xml-resource "test/post.xml")
         edit-href (e/select-attr entry [(e/attr= :rel "edit")] :href)]
     (save-entry entry)
-    (is (get-entry (-> edit-href java.net.URL. .getPath)))
-    (is (thrown? Condition (save-entry entry)))))
+    (is (get-entry (-> edit-href java.net.URL. .getPath)))))

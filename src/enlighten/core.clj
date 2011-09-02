@@ -3,7 +3,7 @@
 ;;   - does not validate posted atom entries
 
 (ns enlighten.core
-  (:use [compojure.core :only (defroutes GET POST)])
+  (:use [compojure.core :only (defroutes GET POST PUT)])
   (:require [clojure.contrib.condition :as cond]
             [clj-time.core :as time]
             [compojure.route :as route]
@@ -32,16 +32,16 @@
 
 (defn handle-post [body]
   (let [entry (-> body e/xml-resource a/normalize-entry populate-entry)]
-    (cond/handler-case :type
-      (m/save-entry entry)
-      (post-response entry)
-      (handle :already-exists
-        (-> (:message cond/*condition*)
-            resp/response
-            (resp/status 403))))))
+    (if (m/get-entry (a/url-path entry))
+      (-> "An entry with this title has already been posted this month."
+          resp/response
+          (resp/status 403))
+      (do
+        (m/save-entry entry)
+        (post-response entry)))))
 
 (defn return-atom? [accept-header]
-  (.contains accept-header a/*atom-type*))
+  (and accept-header (.contains accept-header a/*atom-type*)))
 
 (defn handle-get [url-path accept-header]
   (when-let [entry (m/get-entry url-path)]
@@ -54,11 +54,19 @@
     "coming soon"
     (v/entries)))
 
+(defn handle-put [url-path body]
+  (when-let [old-entry (m/get-entry url-path)]
+    (m/save-entry
+     (e/at (e/xml-resource body)
+       [:updated] (e/content (str (time/now)))))
+    (resp/response nil)))
+
 (defroutes routes
   (GET "/" [] (resp/redirect (:about-uri m/*config*)))
   (POST (:collection-uri m/*config*) {body :body} (handle-post body))
   (GET (:collection-uri m/*config*) {{accept-header "accept"} :headers}
     (handle-get-collection accept-header))
+  (PUT "/*" {uri :uri body :body} (handle-put uri body))
   (route/resources "/")
   (GET "/*" {{accept-header "accept"} :headers uri :uri}
     (handle-get uri accept-header)))
